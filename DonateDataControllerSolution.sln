@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DonateDataController", "DonateDataController\DonateDataController.csproj", "{10154786-3864-40D8-A5CF-49192023D458}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DonateDataUnitTest", "DonateDataUnitTest\DonateDataUnitTest.csproj", "{507CF4A1-0DC8-488F-B061-3A59A894DD20}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{10154786-3864-40D8-A5CF-49192023D458}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{10154786-3864-40D8-A5CF-49192023D458}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{10154786-3864-40D8-A5CF-49192023D458}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{10154786-3864-40D8-A5CF-49192023D458}.Release|Any CPU.Build.0 = Release|Any CPU
+		{507CF4A1-0DC8-488F-B061-3A59A894DD20}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{507CF4A1-0DC8-488F-B061-3A59A894DD20}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{507CF4A1-0DC8-488F-B061-3A59A894DD20}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{507CF4A1-0DC8-488F-B061-3A59A894DD20}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
