@@ -57,7 +57,7 @@ namespace DonateDataUnitTest
                 DonatorZipcode = "",
                 DonatorTelephone = "",
                 DonateAmount = 5000,
-                DonateDetail = detailList                
+                DonateDetail = detailList
             };
             var result = service.DonateDataAdd(itemData);
             Assert.IsNotNull(result);
@@ -73,7 +73,7 @@ namespace DonateDataUnitTest
                     description = "บริจาคด้วยเงินสด",
                     Amount = 500,
                     Remark = "โอนเงินเข้าธนาคาร"
-                }, 
+                },
                 new DonateDetailDataModel
                 {
                     description = "เครื่องทำกาแฟ",
@@ -134,5 +134,14 @@ namespace DonateDataUnitTest
             var result = service.DonateDataDelete(item);
             Assert.IsNotNull(result);
         }
+        [TestMethod]
+        public void ทดสอบการดึงข้อมูลตามrunno()
+        {
+            DonateDataController.Controllers.DonateDataController service = new DonateDataController.Controllers.DonateDataController();
+            DonateDataModel item = new DonateDataModel();
+            item.DocumentRunno = "3";
+            var result = service.DonateDataListbyRunno(item.DocumentRunno);
+            Assert.IsNotNull(result);
+        }
     }
-    }
+}

@@ -88,7 +88,7 @@ namespace DonateDataController.Controllers
                 {
                     qDetailExe.Parameters.Clear();
                     qDetailExe.Parameters.AddWithValue("@documentrunno", returnid);
-                    qDetailExe.Parameters.AddWithValue("@detailrunno", i+1);
+                    qDetailExe.Parameters.AddWithValue("@detailrunno", i + 1);
                     qDetailExe.Parameters.AddWithValue("@description", detail[i].description);
                     qDetailExe.Parameters.AddWithValue("@amount", detail[i].Amount);
                     qDetailExe.Parameters.AddWithValue("@remark", detail[i].Remark);
@@ -182,7 +182,7 @@ namespace DonateDataController.Controllers
                 {
                     qDetailExe.Parameters.Clear();
                     qDetailExe.Parameters.AddWithValue("@documentrunno", item.DocumentRunno);
-                    qDetailExe.Parameters.AddWithValue("@detailrunno", i+1);
+                    qDetailExe.Parameters.AddWithValue("@detailrunno", i + 1);
                     qDetailExe.Parameters.AddWithValue("@description", detail[i].description);
                     qDetailExe.Parameters.AddWithValue("@amount", detail[i].Amount);
                     qDetailExe.Parameters.AddWithValue("@remark", detail[i].Remark);
@@ -238,6 +238,7 @@ namespace DonateDataController.Controllers
         public IHttpActionResult DonateDataListbyRunno(string runno)
         {
             DonateDataModel result = new DonateDataModel();
+            result.DonateDetail = new List<DonateDetailDataModel>();
             DBConnector.DBConnector conn = new DBConnector.DBConnector();
             if (conn.OpenConnection())
             {
@@ -260,6 +261,17 @@ namespace DonateDataController.Controllers
                 qExe.Parameters.AddWithValue("@documentrunno", runno);
                 qDetail.Parameters.AddWithValue("@documentrunno", runno);
                 MySqlDataReader detailReader = qDetail.ExecuteReader();
+                while (detailReader.Read())
+                {
+                    DonateDetailDataModel detailRow = new DonateDetailDataModel();
+                    detailRow.DocumentRunno = detailReader["documentrunno"].ToString();
+                    detailRow.DetailRunno = int.Parse(detailReader["detailrunno"].ToString());
+                    detailRow.description = detailReader["description"].ToString();
+                    detailRow.Amount = double.Parse(detailReader["amount"].ToString());
+                    detailRow.Remark = detailReader["remark"].ToString();
+                    result.DonateDetail.Add(detailRow);
+                }
+                detailReader.Close();
                 MySqlDataReader dataReader = qExe.ExecuteReader();
                 while (dataReader.Read())
                 {
@@ -269,7 +281,10 @@ namespace DonateDataController.Controllers
                     result.PartymemID = dataReader["partymemid"].ToString();
                     result.MemberName = dataReader["membername"].ToString();
                     result.MemberID = dataReader["memberid"].ToString();
-                    result.MemberBirthdate = Convert.ToDateTime(dataReader["memberbirthdate"].ToString(), new CultureInfo("en-US"));
+                    if (!string.IsNullOrEmpty(dataReader["memberbirthdate"].ToString()))
+                        result.MemberBirthdate = Convert.ToDateTime(dataReader["memberbirthdate"].ToString(), new CultureInfo("en-US"));
+                    else
+                        result.MemberBirthdate = null;
                     result.MemberHouseNumber = dataReader["memberhousenumber"].ToString();
                     result.MemberSoi = dataReader["membersoi"].ToString();
                     result.MemberRoad = dataReader["memberroad"].ToString();
@@ -297,20 +312,12 @@ namespace DonateDataController.Controllers
                     result.DonatorProvince = dataReader["donatorprovince"].ToString();
                     result.DonatorZipcode = dataReader["donatorzipcode"].ToString();
                     result.DonatorTelephone = dataReader["donatortelephone"].ToString();
-                    result.DonateAmount = double.Parse(dataReader["donateamount"].ToString());
-                    while (detailReader.Read())
-                    {
-                        DonateDetailDataModel detailRow = new DonateDetailDataModel();
-                        detailRow.DocumentRunno = detailReader["documentrunno"].ToString();
-                        detailRow.DetailRunno = int.Parse(detailReader["detailrunno"].ToString());
-                        detailRow.description = detailReader["description"].ToString();
-                        detailRow.Amount = double.Parse(detailReader["amount"].ToString());
-                        detailRow.Remark = detailReader["remark"].ToString();
-                        result.DonateDetail.Add(detailRow);
-                    }
+                    if (!string.IsNullOrEmpty(dataReader["donateamount"].ToString()))
+                        result.DonateAmount = double.Parse(dataReader["donateamount"].ToString());
+                    else
+                        result.DonateAmount = 0;
                 }
                 dataReader.Close();
-                detailReader.Close();
                 conn.CloseConnection();
                 return Json(result);
             }
@@ -396,7 +403,7 @@ namespace DonateDataController.Controllers
                         DonateAmount = double.Parse(dataReader["donateamount"].ToString()),
                         DonateDetail = detailList
                     };
-                    
+
                 }
                 dataReader.Close();
                 conn.CloseConnection();
