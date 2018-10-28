@@ -23,7 +23,7 @@ namespace DonateDataUnitTest
             DonateDataController.Controllers.DonateDataController service = new DonateDataController.Controllers.DonateDataController();
             DonateDataModel itemData = new DonateDataModel
             {
-                WriteAt = "เขียนที่",
+                WriteAt = "บ้าน",
                 DocumentDate = DateTime.Now.Date,
                 PartymemID = "0002",
                 MemberName = "ชื่อสมาชิกพรรค",
@@ -123,7 +123,16 @@ namespace DonateDataUnitTest
             };
             var result = service.DonateDataEdit(itemData);
             Assert.IsNotNull(result);
+        }
 
+        [TestMethod]
+        public void ทดสอบลบเอกสาร()
+        {
+            DonateDataController.Controllers.DonateDataController service = new DonateDataController.Controllers.DonateDataController();
+            DonateDataModel item = new DonateDataModel();
+            item.DocumentRunno = "2";
+            var result = service.DonateDataDelete(item);
+            Assert.IsNotNull(result);
         }
     }
-}
+    }

@@ -222,6 +222,7 @@ namespace DonateDataController.Controllers
                     Connection = conn.connection,
                     CommandText = sqlString
                 };
+                qExe.Parameters.AddWithValue("@documentrunno", item.DocumentRunno);
                 qExe.ExecuteNonQuery();
                 conn.CloseConnection();
                 return Ok();
