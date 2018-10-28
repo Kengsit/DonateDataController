@@ -88,7 +88,7 @@ namespace DonateDataController.Controllers
                 {
                     qDetailExe.Parameters.Clear();
                     qDetailExe.Parameters.AddWithValue("@documentrunno", returnid);
-                    qDetailExe.Parameters.AddWithValue("@detailrunno", i);
+                    qDetailExe.Parameters.AddWithValue("@detailrunno", i+1);
                     qDetailExe.Parameters.AddWithValue("@description", detail[i].description);
                     qDetailExe.Parameters.AddWithValue("@amount", detail[i].Amount);
                     qDetailExe.Parameters.AddWithValue("@remark", detail[i].Remark);
@@ -141,6 +141,7 @@ namespace DonateDataController.Controllers
                     Connection = conn.connection,
                     CommandText = SQLString
                 };
+                qExe.Parameters.AddWithValue("@documentrunno", item.DocumentRunno);
                 qExe.Parameters.AddWithValue("@writeat", item.WriteAt);
                 qExe.Parameters.AddWithValue("@documentdate", item.DocumentDate);
                 qExe.Parameters.AddWithValue("@partymemid", item.PartymemID);
@@ -181,7 +182,7 @@ namespace DonateDataController.Controllers
                 {
                     qDetailExe.Parameters.Clear();
                     qDetailExe.Parameters.AddWithValue("@documentrunno", item.DocumentRunno);
-                    qDetailExe.Parameters.AddWithValue("@detailrunno", i);
+                    qDetailExe.Parameters.AddWithValue("@detailrunno", i+1);
                     qDetailExe.Parameters.AddWithValue("@description", detail[i].description);
                     qDetailExe.Parameters.AddWithValue("@amount", detail[i].Amount);
                     qDetailExe.Parameters.AddWithValue("@remark", detail[i].Remark);

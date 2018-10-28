@@ -16,8 +16,8 @@ namespace DonateDataUnitTest
                 new DonateDetailDataModel
                 {
                     description = "บริจาคด้วยเงินสด",
-                    Amount = 500,
-                    Remark = "โอนเงินเข้าธนาคาร"
+                    Amount = 5000,
+                    Remark = "หมายเหตุไม่มี"
                 }
             };
             DonateDataController.Controllers.DonateDataController service = new DonateDataController.Controllers.DonateDataController();
@@ -25,7 +25,7 @@ namespace DonateDataUnitTest
             {
                 WriteAt = "เขียนที่",
                 DocumentDate = DateTime.Now.Date,
-                PartymemID = "0001",
+                PartymemID = "0002",
                 MemberName = "ชื่อสมาชิกพรรค",
                 MemberID = "123456789213",
                 MemberBirthdate = null,
@@ -39,9 +39,9 @@ namespace DonateDataUnitTest
                 MemberProvince = "",
                 MemberZipcode = "",
                 MemberTelephone = "",
-                MemberPosition = "",
-                DonateType = "",
-                DonateObjective = "",
+                MemberPosition = "123456",
+                DonateType = "เงินสด",
+                DonateObjective = "เพื่อบำรุงพรรค",
                 DonatorName = "",
                 DonatorID = "",
                 DonatorRegisterNO = "",
@@ -56,7 +56,7 @@ namespace DonateDataUnitTest
                 DonatorProvince = "",
                 DonatorZipcode = "",
                 DonatorTelephone = "",
-                DonateAmount = 500,
+                DonateAmount = 5000,
                 DonateDetail = detailList                
             };
             var result = service.DonateDataAdd(itemData);
@@ -73,11 +73,18 @@ namespace DonateDataUnitTest
                     description = "บริจาคด้วยเงินสด",
                     Amount = 500,
                     Remark = "โอนเงินเข้าธนาคาร"
+                }, 
+                new DonateDetailDataModel
+                {
+                    description = "เครื่องทำกาแฟ",
+                    Amount = 1500,
+                    Remark = ""
                 }
             };
             DonateDataController.Controllers.DonateDataController service = new DonateDataController.Controllers.DonateDataController();
             DonateDataModel itemData = new DonateDataModel
             {
+                DocumentRunno = "1",
                 WriteAt = "เขียนที่",
                 DocumentDate = DateTime.Now.Date,
                 PartymemID = "0001",
@@ -86,12 +93,12 @@ namespace DonateDataUnitTest
                 MemberBirthdate = null,
                 MemberHouseNumber = "123",
                 MemberMoo = "1",
-                MemberBuilding = "",
-                MemberSoi = "",
+                MemberBuilding = "อาคาร",
+                MemberSoi = "ซอย",
                 MemberRoad = "",
                 MemberTambon = "",
                 MemberAmphur = "",
-                MemberProvince = "",
+                MemberProvince = "กรุงเทพมหานคร",
                 MemberZipcode = "",
                 MemberTelephone = "",
                 MemberPosition = "",
@@ -104,17 +111,17 @@ namespace DonateDataUnitTest
                 DonatorHouseNumber = "",
                 DonatorMoo = "",
                 DonatorBuilding = "",
-                DonatorSoi = "",
+                DonatorSoi = "เพิ่มซอยจากการแก้ไข",
                 DonatorRoad = "",
                 DonatorTambon = "",
                 DonatorAmphur = "",
                 DonatorProvince = "",
                 DonatorZipcode = "",
                 DonatorTelephone = "",
-                DonateAmount = 500,
+                DonateAmount = 2000,
                 DonateDetail = detailList
             };
-            var result = service.DonateDataAdd(itemData);
+            var result = service.DonateDataEdit(itemData);
             Assert.IsNotNull(result);
 
         }
