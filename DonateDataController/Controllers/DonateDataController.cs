@@ -328,13 +328,13 @@ namespace DonateDataController.Controllers
         }
         [Route("ListAllReceipt")]
         [HttpGet]
-        public IHttpActionResult ReceipDataList()
+        public IHttpActionResult DonateDataList()
         {
             List<DonateDataModel> result = new List<DonateDataModel>();
             DBConnector.DBConnector conn = new DBConnector.DBConnector();
             if (conn.OpenConnection())
             {
-                string SQLString = @"select * from donatedata where documentrunno = @documentrunno";
+                string SQLString = @"select * from donatedata order by documentrunno";
                 string sqlDetail = @"select * from donatedetaildata where documentrunno = @documentrunno order by detailrunno";
                 MySqlCommand qDetail = new MySqlCommand
                 {
@@ -350,8 +350,57 @@ namespace DonateDataController.Controllers
                 MySqlDataReader dataReader = qExe.ExecuteReader();
                 while (dataReader.Read())
                 {
+                    DonateDataModel detail = new DonateDataModel();
+                    detail.DocumentRunno = dataReader["documentrunno"].ToString();
+                    detail.WriteAt = dataReader["writeat"].ToString();
+                    detail.DocumentDate = Convert.ToDateTime(dataReader["documentdate"].ToString(), new CultureInfo("en-US"));
+                    detail.PartymemID = dataReader["partymemid"].ToString();
+                    detail.MemberName = dataReader["membername"].ToString();
+                    detail.MemberID = dataReader["memberid"].ToString();
+                    if (!string.IsNullOrEmpty(dataReader["memberbirthdate"].ToString()))
+                        detail.MemberBirthdate = Convert.ToDateTime(dataReader["memberbirthdate"].ToString(), new CultureInfo("en-US"));
+                    else
+                        detail.MemberBirthdate = null;
+                    detail.MemberHouseNumber = dataReader["memberhousenumber"].ToString();
+                    detail.MemberSoi = dataReader["membersoi"].ToString();
+                    detail.MemberRoad = dataReader["memberroad"].ToString();
+                    detail.MemberMoo = dataReader["membermoo"].ToString();
+                    detail.MemberBuilding = dataReader["memberbuilding"].ToString();
+                    detail.MemberTambon = dataReader["membertambon"].ToString();
+                    detail.MemberAmphur = dataReader["memberamphur"].ToString();
+                    detail.MemberProvince = dataReader["memberprovince"].ToString();
+                    detail.MemberZipcode = dataReader["memberzipcode"].ToString();
+                    detail.MemberTelephone = dataReader["membertelephone"].ToString();
+                    detail.MemberPosition = dataReader["memberposition"].ToString();
+                    detail.DonateType = dataReader["donatetype"].ToString();
+                    detail.DonateObjective = dataReader["donateobjective"].ToString();
+                    detail.DonatorName = dataReader["donatorname"].ToString();
+                    detail.DonatorID = dataReader["donatorid"].ToString();
+                    detail.DonatorRegisterNO = dataReader["donatorregisterno"].ToString();
+                    detail.DonatorTaxID = dataReader["donatortaxid"].ToString();
+                    detail.DonatorHouseNumber = dataReader["donatorhousenumber"].ToString();
+                    detail.DonatorMoo = dataReader["donatormoo"].ToString();
+                    detail.DonatorBuilding = dataReader["donatorbuilding"].ToString();
+                    detail.DonatorSoi = dataReader["donatorsoi"].ToString();
+                    detail.DonatorRoad = dataReader["donatorroad"].ToString();
+                    detail.DonatorTambon = dataReader["donatortambon"].ToString();
+                    detail.DonatorAmphur = dataReader["donatoramphur"].ToString();
+                    detail.DonatorProvince = dataReader["donatorprovince"].ToString();
+                    detail.DonatorZipcode = dataReader["donatorzipcode"].ToString();
+                    detail.DonatorTelephone = dataReader["donatortelephone"].ToString();
+                    if (!string.IsNullOrEmpty(dataReader["donateamount"].ToString()))
+                        detail.DonateAmount = double.Parse(dataReader["donateamount"].ToString());
+                    else
+                        detail.DonateAmount = 0;
+                    result.Add(detail);
+                }
+                dataReader.Close();
+
+                foreach (var donateDataModel in result)
+                {
                     List<DonateDetailDataModel> detailList = new List<DonateDetailDataModel>();
-                    qDetail.Parameters.AddWithValue("@documentrunno", dataReader["documentrunno"].ToString());
+                    qDetail.Parameters.Clear();
+                    qDetail.Parameters.AddWithValue("@documentrunno", donateDataModel.DocumentRunno);
                     MySqlDataReader detailReader = qDetail.ExecuteReader();
                     while (detailReader.Read())
                     {
@@ -363,49 +412,10 @@ namespace DonateDataController.Controllers
                         detailRow.Remark = detailReader["remark"].ToString();
                         detailList.Add(detailRow);
                     }
-
-                    DonateDataModel detail = new DonateDataModel
-                    {
-                        DocumentRunno = dataReader["documentrunno"].ToString(),
-                        WriteAt = dataReader["writeat"].ToString(),
-                        DocumentDate = Convert.ToDateTime(dataReader["documentdate"].ToString(), new CultureInfo("en-US")),
-                        PartymemID = dataReader["partymemid"].ToString(),
-                        MemberName = dataReader["membername"].ToString(),
-                        MemberID = dataReader["memberid"].ToString(),
-                        MemberBirthdate = Convert.ToDateTime(dataReader["memberbirthdate"].ToString(), new CultureInfo("en-US")),
-                        MemberHouseNumber = dataReader["memberhousenumber"].ToString(),
-                        MemberSoi = dataReader["membersoi"].ToString(),
-                        MemberRoad = dataReader["memberroad"].ToString(),
-                        MemberMoo = dataReader["membermoo"].ToString(),
-                        MemberBuilding = dataReader["memberbuilding"].ToString(),
-                        MemberTambon = dataReader["membertambon"].ToString(),
-                        MemberAmphur = dataReader["memberamphur"].ToString(),
-                        MemberProvince = dataReader["memberprovince"].ToString(),
-                        MemberZipcode = dataReader["memberzipcode"].ToString(),
-                        MemberTelephone = dataReader["membertelephone"].ToString(),
-                        MemberPosition = dataReader["memberposition"].ToString(),
-                        DonateType = dataReader["donatetype"].ToString(),
-                        DonateObjective = dataReader["donateobjective"].ToString(),
-                        DonatorName = dataReader["donatorname"].ToString(),
-                        DonatorID = dataReader["donatorid"].ToString(),
-                        DonatorRegisterNO = dataReader["donatorregisterno"].ToString(),
-                        DonatorTaxID = dataReader["donatortaxid"].ToString(),
-                        DonatorHouseNumber = dataReader["donatorhousenumber"].ToString(),
-                        DonatorMoo = dataReader["donatormoo"].ToString(),
-                        DonatorBuilding = dataReader["donatorbuilding"].ToString(),
-                        DonatorSoi = dataReader["donatorsoi"].ToString(),
-                        DonatorRoad = dataReader["donatorroad"].ToString(),
-                        DonatorTambon = dataReader["donatortambon"].ToString(),
-                        DonatorAmphur = dataReader["donatoramphur"].ToString(),
-                        DonatorProvince = dataReader["donatorprovince"].ToString(),
-                        DonatorZipcode = dataReader["donatorzipcode"].ToString(),
-                        DonatorTelephone = dataReader["donatortelephone"].ToString(),
-                        DonateAmount = double.Parse(dataReader["donateamount"].ToString()),
-                        DonateDetail = detailList
-                    };
-
+                    detailReader.Close();
+                    donateDataModel.DonateDetail = detailList;
                 }
-                dataReader.Close();
+
                 conn.CloseConnection();
                 return Json(result);
             }

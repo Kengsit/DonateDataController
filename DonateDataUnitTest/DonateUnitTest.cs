@@ -143,5 +143,12 @@ namespace DonateDataUnitTest
             var result = service.DonateDataListbyRunno(item.DocumentRunno);
             Assert.IsNotNull(result);
         }
+        [TestMethod]
+        public void ทดสอบดึงเอกสารทั้งหมด()
+        {
+            DonateDataController.Controllers.DonateDataController service = new DonateDataController.Controllers.DonateDataController();            
+            var result = service.DonateDataList();
+            Assert.IsNotNull(result);
+        }
     }
 }
