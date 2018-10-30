@@ -197,9 +197,9 @@ namespace DonateDataController.Controllers
                 return BadRequest("Database connect fail!");
             }
         }
-        [Route("Delete")]
+        [Route("Delete/{id}")]
         [HttpPost]
-        public IHttpActionResult DonateDataDelete([FromBody] DonateDataModel item)
+        public IHttpActionResult DonateDataDelete(string id)
         {
             DBConnector.DBConnector conn = new DBConnector.DBConnector();
             if (conn.OpenConnection())
@@ -210,11 +210,11 @@ namespace DonateDataController.Controllers
                     Connection = conn.connection,
                     CommandText = sqlString
                 };
-                if (string.IsNullOrEmpty(item.DocumentRunno))
+                if (string.IsNullOrEmpty(id))
                 {
                     return BadRequest("Document Key is null!");
                 }
-                qExe.Parameters.AddWithValue("@documentrunno", item.DocumentRunno);
+                qExe.Parameters.AddWithValue("@documentrunno", id);
                 qExe.ExecuteNonQuery();
                 sqlString = "delete from donatedetaildata where documentrunno = @documentrunno";
                 qExe = new MySqlCommand
@@ -222,7 +222,7 @@ namespace DonateDataController.Controllers
                     Connection = conn.connection,
                     CommandText = sqlString
                 };
-                qExe.Parameters.AddWithValue("@documentrunno", item.DocumentRunno);
+                qExe.Parameters.AddWithValue("@documentrunno", id);
                 qExe.ExecuteNonQuery();
                 conn.CloseConnection();
                 return Ok();
