@@ -129,9 +129,9 @@ namespace DonateDataUnitTest
         public void ทดสอบลบเอกสาร()
         {
             DonateDataController.Controllers.DonateDataController service = new DonateDataController.Controllers.DonateDataController();
-            DonateDataModel item = new DonateDataModel();
-            item.DocumentRunno = "2";
-            var result = service.DonateDataDelete(item);
+            // DonateDataModel item = new DonateDataModel();
+            // item.DocumentRunno = "2";
+            var result = service.DonateDataDelete("2");
             Assert.IsNotNull(result);
         }
         [TestMethod]
