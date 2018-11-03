@@ -15,7 +15,7 @@ namespace DonateDataUnitTest
             {
                 new DonateDetailDataModel
                 {
-                    description = "บริจาคด้วยเงินสด",
+                    Description = "บริจาคด้วยเงินสด",
                     Amount = 5000,
                     Remark = "หมายเหตุไม่มี"
                 }
@@ -25,37 +25,12 @@ namespace DonateDataUnitTest
             {
                 WriteAt = "บ้าน",
                 DocumentDate = DateTime.Now.Date,
-                PartymemID = "0002",
-                MemberName = "ชื่อสมาชิกพรรค",
-                MemberID = "123456789213",
-                MemberBirthdate = null,
-                MemberHouseNumber = "123",
-                MemberMoo = "1",
-                MemberBuilding = "",
-                MemberSoi = "",
-                MemberRoad = "",
-                MemberTambon = "",
-                MemberAmphur = "",
-                MemberProvince = "",
-                MemberZipcode = "",
-                MemberTelephone = "",
-                MemberPosition = "123456",
                 DonateType = "เงินสด",
                 DonateObjective = "เพื่อบำรุงพรรค",
-                DonatorName = "",
-                DonatorID = "",
-                DonatorRegisterNO = "",
-                DonatorTaxID = "",
-                DonatorHouseNumber = "",
-                DonatorMoo = "",
-                DonatorBuilding = "",
-                DonatorSoi = "",
-                DonatorRoad = "",
-                DonatorTambon = "",
-                DonatorAmphur = "",
-                DonatorProvince = "",
-                DonatorZipcode = "",
-                DonatorTelephone = "",
+                MemberRunno = 1,
+                MemberId = "",
+                DonatorRunno = 1,
+                DonatorId = "",
                 DonateAmount = 5000,
                 DonateDetail = detailList
             };
@@ -70,13 +45,13 @@ namespace DonateDataUnitTest
             {
                 new DonateDetailDataModel
                 {
-                    description = "บริจาคด้วยเงินสด",
+                    Description = "บริจาคด้วยเงินสด",
                     Amount = 500,
                     Remark = "โอนเงินเข้าธนาคาร"
                 },
                 new DonateDetailDataModel
                 {
-                    description = "เครื่องทำกาแฟ",
+                    Description = "เครื่องทำกาแฟ",
                     Amount = 1500,
                     Remark = ""
                 }
@@ -84,41 +59,16 @@ namespace DonateDataUnitTest
             DonateDataController.Controllers.DonateDataController service = new DonateDataController.Controllers.DonateDataController();
             DonateDataModel itemData = new DonateDataModel
             {
-                DocumentRunno = "1",
-                WriteAt = "เขียนที่",
+                DocumentRunno = 5,
+                WriteAt = "บ้าน",
                 DocumentDate = DateTime.Now.Date,
-                PartymemID = "0001",
-                MemberName = "ชื่อสมาชิกพรรค",
-                MemberID = "123456789213",
-                MemberBirthdate = null,
-                MemberHouseNumber = "123",
-                MemberMoo = "1",
-                MemberBuilding = "อาคาร",
-                MemberSoi = "ซอย",
-                MemberRoad = "",
-                MemberTambon = "",
-                MemberAmphur = "",
-                MemberProvince = "กรุงเทพมหานคร",
-                MemberZipcode = "",
-                MemberTelephone = "",
-                MemberPosition = "",
-                DonateType = "",
-                DonateObjective = "",
-                DonatorName = "",
-                DonatorID = "",
-                DonatorRegisterNO = "",
-                DonatorTaxID = "",
-                DonatorHouseNumber = "",
-                DonatorMoo = "",
-                DonatorBuilding = "",
-                DonatorSoi = "เพิ่มซอยจากการแก้ไข",
-                DonatorRoad = "",
-                DonatorTambon = "",
-                DonatorAmphur = "",
-                DonatorProvince = "",
-                DonatorZipcode = "",
-                DonatorTelephone = "",
-                DonateAmount = 2000,
+                DonateType = "เงินสด",
+                DonateObjective = "เพื่อบำรุงพรรค",
+                MemberRunno = 1,
+                MemberId = "",
+                DonatorRunno = 1,
+                DonatorId = "",
+                DonateAmount = 5000,
                 DonateDetail = detailList
             };
             var result = service.DonateDataEdit(itemData);
@@ -131,7 +81,7 @@ namespace DonateDataUnitTest
             DonateDataController.Controllers.DonateDataController service = new DonateDataController.Controllers.DonateDataController();
             // DonateDataModel item = new DonateDataModel();
             // item.DocumentRunno = "2";
-            var result = service.DonateDataDelete("2");
+            var result = service.DonateDataDelete("6");
             Assert.IsNotNull(result);
         }
         [TestMethod]
@@ -139,16 +89,18 @@ namespace DonateDataUnitTest
         {
             DonateDataController.Controllers.DonateDataController service = new DonateDataController.Controllers.DonateDataController();
             DonateDataModel item = new DonateDataModel();
-            item.DocumentRunno = "3";
-            var result = service.DonateDataListbyRunno(item.DocumentRunno);
+            string DocumentRunno = "5";
+            var result = service.DonateDataListbyRunno(DocumentRunno);
             Assert.IsNotNull(result);
         }
+        
         [TestMethod]
         public void ทดสอบดึงเอกสารทั้งหมด()
         {
-            DonateDataController.Controllers.DonateDataController service = new DonateDataController.Controllers.DonateDataController();            
+            DonateDataController.Controllers.DonateDataController service = new DonateDataController.Controllers.DonateDataController();
             var result = service.DonateDataList();
             Assert.IsNotNull(result);
         }
+        
     }
 }
