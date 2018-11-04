@@ -101,6 +101,52 @@ namespace DonateDataUnitTest
             var result = service.DonateDataList();
             Assert.IsNotNull(result);
         }
-        
+
+        [TestMethod]
+        public void ทดสอบบันทึกเฉพาะDetailของเอกสาร()
+        {
+            DonateDetailDataModel detailitem = new DonateDetailDataModel
+            {
+                DocumentRunno = 5,
+                Description = "เพิ่มรายการโดยที่",
+                Amount = 5000,
+                Remark = "เลขระหว่างกลางหาย"
+            };              
+            DonateDataController.Controllers.DonateDataController service = new DonateDataController.Controllers.DonateDataController();
+            var result = service.AddDonateDetailData(detailitem);
+            Assert.IsNotNull(result);
+        }
+
+        [TestMethod]
+        public void ทดสอบแก้ไขDetailเอกสาร()
+        {
+            DonateDetailDataModel detailitem = new DonateDetailDataModel
+            {
+                DocumentRunno = 5,
+                DetailRunno = 2,
+                Description = "เครื่องชงกาแฟสำเร็จ",
+                Amount = 20000,
+                Remark = "สำหรับใช้งานใน Office"
+            };
+            DonateDataController.Controllers.DonateDataController service = new DonateDataController.Controllers.DonateDataController();
+            var result = service.EditDonateDetailData(detailitem);
+            Assert.IsNotNull(result);
+        }
+
+        [TestMethod]
+        public void ทดสอบลบข้อมูลDetail()
+        {
+            DonateDataController.Controllers.DonateDataController service = new DonateDataController.Controllers.DonateDataController();
+            var result = service.DeleteDonateDetailData("5", "3");
+            Assert.IsNotNull(result);
+        }
+
+        [TestMethod]
+        public void ดึงข้อมูลDetail()
+        {
+            DonateDataController.Controllers.DonateDataController service = new DonateDataController.Controllers.DonateDataController();
+            var result = service.GetDetailData("5");
+            Assert.IsNotNull(result);
+        }
     }
 }
