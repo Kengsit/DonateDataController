@@ -6,12 +6,14 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.Cors;
 using System.Web.Management;
 using MySql.Data.MySqlClient;
 using UtilityControllers.Models;
 
 namespace DonateDataController.Controllers
 {
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     [RoutePrefix("api/DanateData")]
     public class DonateDataController : ApiController
     {
