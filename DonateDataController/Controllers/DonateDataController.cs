@@ -14,10 +14,10 @@ using UtilityControllers.Models;
 namespace DonateDataController.Controllers
 {
     [EnableCors(origins: "*", headers: "*", methods: "*")]
-    [RoutePrefix("api/DanateData")]
+    [RoutePrefix("api")]
     public class DonateDataController : ApiController
     {
-        [Route("Add")]
+        [Route("DonateData/Add")]
         [HttpPost]
         public IHttpActionResult DonateDataAdd([FromBody] DonateDataModel item)
         {
@@ -82,7 +82,7 @@ namespace DonateDataController.Controllers
             }
         }
 
-        [Route("Edit")]
+        [Route("DonateData/Edit")]
         [HttpPost]
         public IHttpActionResult DonateDataEdit([FromBody] DonateDataModel item)
         {
@@ -153,7 +153,7 @@ namespace DonateDataController.Controllers
             }
         }
 
-        [Route("Delete/{id}")]
+        [Route("DonateData/Delete/{id}")]
         [HttpPost]
         public IHttpActionResult DonateDataDelete(string id)
         {
@@ -196,9 +196,9 @@ namespace DonateDataController.Controllers
             }
         }
 
-        [Route("ListbyRunno/{runno}")]
+        [Route("DonateData/GetByID/{id}")]
         [HttpGet]
-        public IHttpActionResult DonateDataListbyRunno(string runno)
+        public IHttpActionResult DonateDataListbyRunno(string id)
         {
             string AddressGenerate;
             DonateDataModel result = new DonateDataModel();
@@ -209,7 +209,7 @@ namespace DonateDataController.Controllers
                 try
                 {
                     string sqlString;
-                    if (!string.IsNullOrEmpty(runno))
+                    if (!string.IsNullOrEmpty(id))
                         sqlString = @"select doc.*, docs.DetailRunno, docs.Description, docs.Amount, docs.Remark, 
                                   mem.MemberRunno, mem.MemberId, mem.MemberPreName, mem.MemberName, mem.MemberSurname,
                                   mem.PositionNo, mem.BirthDate, mem.HouseNumber mHouseNumber, mem.Soi mSoi, mem.Road mRoad, 
@@ -238,8 +238,8 @@ namespace DonateDataController.Controllers
                         Connection = conn.connection,
                         CommandText = sqlString
                     };
-                    qExe.Parameters.AddWithValue("@DocumentRunno", runno);
-                    qDetail.Parameters.AddWithValue("@DocumentRunno", runno);
+                    qExe.Parameters.AddWithValue("@DocumentRunno", id);
+                    qDetail.Parameters.AddWithValue("@DocumentRunno", id);
                     MySqlDataReader detailReader = qDetail.ExecuteReader();
                     while (detailReader.Read())
                     {
@@ -340,7 +340,7 @@ namespace DonateDataController.Controllers
             }
         }
 
-        [Route("ListAllReceipt")]
+        [Route("DonateData/ListAll")]
         [HttpGet]
         public IHttpActionResult DonateDataList()
         {
@@ -485,7 +485,7 @@ namespace DonateDataController.Controllers
             }
         }
 
-        [Route("AddDetail")]
+        [Route("DonateData/AddDetail")]
         [HttpPost]
         public IHttpActionResult AddDonateDetailData([FromBody] DonateDetailDataModel item)
         {
@@ -536,7 +536,7 @@ namespace DonateDataController.Controllers
             }
         }
 
-        [Route("EditDetail")]
+        [Route("DonateData/EditDetail")]
         [HttpPost]
         public IHttpActionResult EditDonateDetailData([FromBody] DonateDetailDataModel item)
         {
@@ -576,7 +576,7 @@ namespace DonateDataController.Controllers
             }
         }
 
-        [Route("Delete/{ID}/{detailID}")]
+        [Route("DonateData/Delete/{ID}/{detailID}")]
         [HttpPost]
         public IHttpActionResult DeleteDonateDetailData(string ID, string detailID)
         {
@@ -609,7 +609,7 @@ namespace DonateDataController.Controllers
             }
         }
 
-        [Route("GetDetailData/{DocumentRunno}")]
+        [Route("DonateData/GetDetailData/{DocumentRunno}")]
         [HttpGet]
         public IHttpActionResult GetDetailData(string DocumentRunno)
         {
@@ -645,6 +645,216 @@ namespace DonateDataController.Controllers
                     return BadRequest(e.Message);
                 }
 
+            }
+            else
+            {
+                return BadRequest("Database connect fail!");
+            }
+        }
+        [Route("Donator/Add")]
+        [HttpPost]
+        public IHttpActionResult AddDonatorData([FromBody] DonatorData item)
+        {
+            DBConnector.DBConnector conn = new DBConnector.DBConnector();
+            string SQLString;
+            if (conn.OpenConnection())
+            {
+                SQLString = @"INSERT INTO donatordata (DonatorId, DonatorPreName, DonatorName, DonatorSurName,
+                              DonatorCitizenId, DonatorRegisterNo, DonatorTaxId, HouseNumber, Soi, Road, Moo, Building, Tambon,
+                              Amphur, Province, ZipCode, Telephone) VALUES (@DonatorId, @DonatorPreName,
+                              @DonatorName, @DonatorSurName, @DonatorCitizenId, @DonatorRegisterNo, @DonatorTaxId, @HouseNumber,
+                              @Soi, @Road, @Moo, @Building, @Tambon, @Amphur, @Province, @ZipCode, @Telephone)";
+                MySqlCommand qExe = new MySqlCommand
+                {
+                    Connection = conn.connection,
+                    CommandText = SQLString
+                };
+                qExe.Parameters.AddWithValue("@DonatorId", item.DonatorId);
+                qExe.Parameters.AddWithValue("@DonatorPreName", item.DonatorPreName);
+                qExe.Parameters.AddWithValue("@DonatorName", item.DonatorName);
+                qExe.Parameters.AddWithValue("@DonatorSurName", item.DonatorSurName);
+                qExe.Parameters.AddWithValue("@DonatorCitizenId", item.DonatorCitizenId);
+                qExe.Parameters.AddWithValue("@DonatorRegisterNo", item.DonatorRegisterNo);
+                qExe.Parameters.AddWithValue("@DonatorTaxId", item.DonatorTaxId);
+                qExe.Parameters.AddWithValue("@HouseNumber", item.HouseNumber);
+                qExe.Parameters.AddWithValue("@Soi", item.Soi);
+                qExe.Parameters.AddWithValue("@Road", item.Road);
+                qExe.Parameters.AddWithValue("@Moo", item.Moo);
+                qExe.Parameters.AddWithValue("@Building", item.Building);
+                qExe.Parameters.AddWithValue("@Tambon", item.Tambon);
+                qExe.Parameters.AddWithValue("@Amphur", item.Amphur);
+                qExe.Parameters.AddWithValue("@Province", item.Province);
+                qExe.Parameters.AddWithValue("@ZipCode", item.ZipCode);
+                qExe.Parameters.AddWithValue("@Telephone", item.Telephone);
+                qExe.ExecuteNonQuery();
+                long returnid = qExe.LastInsertedId;
+                conn.CloseConnection();
+                return Ok(returnid.ToString());
+            }
+            else
+            {
+                return BadRequest("Database connect fail!");
+            }
+        }
+        [Route("Donator/Edit")]
+        [HttpPost]
+        public IHttpActionResult EditDonatorData([FromBody] DonatorData item)
+        {
+            DBConnector.DBConnector conn = new DBConnector.DBConnector();
+            string SQLString;
+            if (conn.OpenConnection())
+            {
+                SQLString = @"UPDATE donatordata SET DonatorRunno = @DonatorRunno, DonatorId = @DonatorId, DonatorPreName = @DonatorPreName,
+                              DonatorName = @DonatorName, DonatorSurName = @DonatorSurName, DonatorCitizenId = @DonatorCitizenId,
+                              DonatorRegisterNo = @DonatorRegisterNo, DonatorTaxId = @DonatorTaxId, HouseNumber = @HouseNumber,
+                              Soi = @Soi, Road = @Road, Moo = @Moo, Building = @Building, Tambon = @Tambon, Amphur = @Amphur,
+                              Province = @Province, Zipcode = @Zipcode, Telephone = @Telephone WHERE DonatorRunno = @DonatorRunno ";
+                MySqlCommand qExe = new MySqlCommand
+                {
+                    Connection = conn.connection,
+                    CommandText = SQLString
+                };
+                qExe.Parameters.AddWithValue("@DonatorRunno", item.DonatorRunno);
+                qExe.Parameters.AddWithValue("@DonatorId", item.DonatorId);
+                qExe.Parameters.AddWithValue("@DonatorPreName", item.DonatorPreName);
+                qExe.Parameters.AddWithValue("@DonatorName", item.DonatorName);
+                qExe.Parameters.AddWithValue("@DonatorSurName", item.DonatorSurName);
+                qExe.Parameters.AddWithValue("@DonatorCitizenId", item.DonatorCitizenId);
+                qExe.Parameters.AddWithValue("@DonatorRegisterNo", item.DonatorRegisterNo);
+                qExe.Parameters.AddWithValue("@DonatorTaxId", item.DonatorTaxId);
+                qExe.Parameters.AddWithValue("@HouseNumber", item.HouseNumber);
+                qExe.Parameters.AddWithValue("@Soi", item.Soi);
+                qExe.Parameters.AddWithValue("@Road", item.Road);
+                qExe.Parameters.AddWithValue("@Moo", item.Moo);
+                qExe.Parameters.AddWithValue("@Building", item.Building);
+                qExe.Parameters.AddWithValue("@Tambon", item.Tambon);
+                qExe.Parameters.AddWithValue("@Amphur", item.Amphur);
+                qExe.Parameters.AddWithValue("@Province", item.Province);
+                qExe.Parameters.AddWithValue("@ZipCode", item.ZipCode);
+                qExe.Parameters.AddWithValue("@Telephone", item.Telephone);
+                qExe.ExecuteNonQuery();
+                conn.CloseConnection();
+                return Ok();
+            }
+            else
+            {
+                return BadRequest("Database connect fail!");
+            }
+        }
+        [Route("Donator/Delete/{id}")]
+        [HttpPost]
+        public IHttpActionResult DeleteDonatorData(string id)
+        {
+            DBConnector.DBConnector conn = new DBConnector.DBConnector();
+            string SQLString;
+            if (conn.OpenConnection())
+            {
+                SQLString = @"DELETE FROM donatordata WHERE DonatorRunno = @DonatorRunno";
+                MySqlCommand qExe = new MySqlCommand
+                {
+                    Connection = conn.connection,
+                    CommandText = SQLString
+                };
+                qExe.Parameters.AddWithValue("@DonatorRunno", id);
+                qExe.ExecuteNonQuery();
+                conn.CloseConnection();
+                return Ok();
+            }
+            else
+            {
+                return BadRequest("Database connect fail!");
+            }
+        }
+
+        [Route("Donator/ListAll")]
+        [HttpGet]
+        public IHttpActionResult ListAllDonator()
+        {
+            List<DonatorData> result = new List<DonatorData>();
+            DBConnector.DBConnector conn = new DBConnector.DBConnector();
+            string SQLString;
+            if (conn.OpenConnection())
+            {
+                SQLString = @"SELECT * FROM donatordata order by DonatorId";
+                MySqlCommand qExe = new MySqlCommand
+                {
+                    Connection = conn.connection,
+                    CommandText = SQLString
+                };
+                MySqlDataReader dataReader = qExe.ExecuteReader();
+                while (dataReader.Read())
+                {
+                    DonatorData detail = new DonatorData();
+                    detail.DonatorRunno = int.Parse(dataReader["DonatorRunno"].ToString());
+                    detail.DonatorId = dataReader["DonatorId"].ToString();
+                    detail.DonatorPreName = dataReader["DonatorPreName"].ToString();
+                    detail.DonatorName = dataReader["DonatorName"].ToString();
+                    detail.DonatorSurName = dataReader["DonatorSurName"].ToString();
+                    detail.DonatorCitizenId = dataReader["DonatorCitizenId"].ToString();
+                    detail.DonatorRegisterNo = dataReader["DonatorRegisterNo"].ToString();
+                    detail.DonatorTaxId = dataReader["DonatorTaxId"].ToString();
+                    detail.HouseNumber = dataReader["HouseNumber"].ToString();
+                    detail.Soi = dataReader["Soi"].ToString();
+                    detail.Road = dataReader["Road"].ToString();
+                    detail.Moo = dataReader["Moo"].ToString();
+                    detail.Building = dataReader["Building"].ToString();
+                    detail.Tambon = dataReader["Tambon"].ToString();
+                    detail.Amphur = dataReader["Amphur"].ToString();
+                    detail.Province = dataReader["Province"].ToString();
+                    detail.ZipCode = dataReader["ZipCode"].ToString();
+                    detail.Telephone = dataReader["Telephone"].ToString();
+                    result.Add(detail);
+                }
+                dataReader.Close();
+                dataReader.Dispose();
+                return Json(result);
+            }
+            else
+            {
+                return BadRequest("Database connect fail!");
+            }
+        }
+        [Route("Donator/GetByID/{id}")]
+        [HttpGet]
+        public IHttpActionResult GetDonatorData(string id)
+        {
+            DonatorData result = new DonatorData();
+            DBConnector.DBConnector conn = new DBConnector.DBConnector();
+            string SQLString;
+            if (conn.OpenConnection())
+            {
+                SQLString = @"SELECT * FROM donatordata where DonatorRunno = '" + id + @"'
+                              order by DonatorId";
+                MySqlCommand qExe = new MySqlCommand
+                {
+                    Connection = conn.connection,
+                    CommandText = SQLString
+                };
+                MySqlDataReader dataReader = qExe.ExecuteReader();
+                while (dataReader.Read())
+                {
+                    result.DonatorRunno = int.Parse(dataReader["DonatorRunno"].ToString());
+                    result.DonatorId = dataReader["DonatorId"].ToString();
+                    result.DonatorPreName = dataReader["DonatorPreName"].ToString();
+                    result.DonatorName = dataReader["DonatorName"].ToString();
+                    result.DonatorSurName = dataReader["DonatorSurName"].ToString();
+                    result.DonatorCitizenId = dataReader["DonatorCitizenId"].ToString();
+                    result.DonatorRegisterNo = dataReader["DonatorRegisterNo"].ToString();
+                    result.DonatorTaxId = dataReader["DonatorTaxId"].ToString();
+                    result.HouseNumber = dataReader["HouseNumber"].ToString();
+                    result.Soi = dataReader["Soi"].ToString();
+                    result.Road = dataReader["Road"].ToString();
+                    result.Moo = dataReader["Moo"].ToString();
+                    result.Building = dataReader["Building"].ToString();
+                    result.Tambon = dataReader["Tambon"].ToString();
+                    result.Amphur = dataReader["Amphur"].ToString();
+                    result.Province = dataReader["Province"].ToString();
+                    result.ZipCode = dataReader["ZipCode"].ToString();
+                    result.Telephone = dataReader["Telephone"].ToString();
+                }
+                dataReader.Close();
+                dataReader.Dispose();
+                return Json(result);
             }
             else
             {

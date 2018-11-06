@@ -148,5 +148,66 @@ namespace DonateDataUnitTest
             var result = service.GetDetailData("5");
             Assert.IsNotNull(result);
         }
+
+        [TestMethod]
+        public void ทดสอบเพิ่มข้อมูลผู้บริจาค()
+        {
+            DonateDataController.Controllers.DonateDataController service = new DonateDataController.Controllers.DonateDataController();
+            DonatorData item = new DonatorData();
+            item.DonatorId = "0003";
+            item.DonatorPreName = "นาย";
+            item.DonatorName = "ทดสอบลบ";
+            item.DonatorSurName = "ลบได้เลย";
+            item.DonatorCitizenId = "4564567890123";
+            item.DonatorRegisterNo = "";
+            item.DonatorTaxId = "";
+            item.HouseNumber = "98";
+            item.Soi = "ซอย";
+            item.Road = "";
+            item.Moo = "5";
+            item.Building = "";
+            item.Tambon = "";
+            item.Amphur = "";
+            item.Province = "";
+            item.ZipCode = "10400";
+            item.Telephone = "";
+            var result = service.AddDonatorData(item);
+            Assert.IsNotNull(result);
+        }
+        [TestMethod]
+        public void ทดสอบแก้ไขข้อมูล()
+        {
+            DonateDataController.Controllers.DonateDataController service = new DonateDataController.Controllers.DonateDataController();
+            DonatorData item = new DonatorData();
+            item.DonatorRunno = 2;
+            item.DonatorId = "0002";
+            item.DonatorPreName = "นาย";
+            item.DonatorName = "แก้ไขข้อมูล";
+            item.DonatorSurName = "ทดสอบมา";
+            item.DonatorCitizenId = "4";
+            item.DonatorRegisterNo = "";
+            item.DonatorTaxId = "";
+            item.HouseNumber = "8";
+            item.Soi = "3321";
+            item.Road = "";
+            item.Moo = "9";
+            item.Building = "";
+            item.Tambon = "";
+            item.Amphur = "";
+            item.Province = "";
+            item.ZipCode = "99999";
+            item.Telephone = "";
+            var result = service.EditDonatorData(item);
+            Assert.IsNotNull(result);
+        }
+        [TestMethod]
+        public void ทดสอบลบข้อมูลผู้บริจาค()
+        {
+            DonateDataController.Controllers.DonateDataController service = new DonateDataController.Controllers.DonateDataController();
+            DonatorData item = new DonatorData();
+            item.DonatorRunno = 2;
+            var result = service.DeleteDonatorData(item.DonatorRunno.ToString());
+            Assert.IsNotNull(result);
+        }
     }
 }
